@@ -8,37 +8,43 @@ function App() {
 
   const calculate = async (operation) => {
     try {
-        const response = await fetch(`https://calculator-backend-production-4c15.up.railway.app/${operation}`, {
-            headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Basic " + btoa("admin:password"),
-        },
-        body: JSON.stringify({
-          firstNumber: Number(a),
-          secondNumber: Number(b),
-        }),
-      });
+      const response = await fetch(
+        `https://calculator-backend-production-4c15.up.railway.app/${operation}`,
+{
+    method: "POST",
+        headers: {
+    "Content-Type": "application/json",
+        "Authorization": "Basic " + btoa("admin:password")
+},
+    body: JSON.stringify({
+        firstNumber: Number(a),
+        secondNumber: Number(b),
+        operation
+    })
+}
+);
 
-      const data = await response.text();
+const data = await response.text();
 
-        if (!response.ok) {
-            try {
-                const error = JSON.parse(data);
-                setResult("⚠️ " + error.message);
-            } catch {
-                setResult("⚠️ Something went wrong");
-            }
-            return;
-        }
-
-      setResult(data);
-    } catch (error) {
-      setResult("Unable to connect to backend");
+if (!response.ok) {
+    try {
+        const error = JSON.parse(data);
+        setResult("⚠️ " + error.message);
+    } catch {
+        setResult("⚠️ Something went wrong");
     }
-  };
+    return;
+}
 
-  return (
-      <div className="calculator">
+setResult(data);
+
+} catch (error) {
+    setResult("Unable to connect to backend");
+}
+};
+
+return (
+    <div className="calculator">
         <h1>Calculator</h1>
 
         <input
@@ -56,15 +62,15 @@ function App() {
         />
 
         <div className="buttons">
-          <button onClick={() => calculate("add")}>+</button>
-          <button onClick={() => calculate("subtract")}>−</button>
-          <button onClick={() => calculate("multiply")}>×</button>
-          <button onClick={() => calculate("divide")}>÷</button>
+            <button onClick={() => calculate("add")}>+</button>
+            <button onClick={() => calculate("subtract")}>−</button>
+            <button onClick={() => calculate("multiply")}>×</button>
+            <button onClick={() => calculate("divide")}>÷</button>
         </div>
 
         <h2>{result}</h2>
-      </div>
-  );
+    </div>
+);
 }
 
 export default App;
