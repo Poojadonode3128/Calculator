@@ -12,23 +12,27 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import java.util.List;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/actuator/health").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .anyRequest().authenticated()).httpBasic(Customizer.withDefaults());
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
+
         return http.build();
     }
 
@@ -39,12 +43,14 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+
         UserDetails user = User.builder()
                 .username("admin")
                 .password(passwordEncoder.encode("password"))
                 .roles("USER")
                 .build();
-        return new  InMemoryUserDetailsManager(user);
+
+        return new InMemoryUserDetailsManager(user);
     }
 
     @Bean
@@ -55,7 +61,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(
                 List.of(
                         "http://localhost:5173",
-                        "https://calculator-production-d873.up.railway.app"
+                        "https://beneficial-manifestation-production-3f4e.up.railway.app"
                 )
         );
 
