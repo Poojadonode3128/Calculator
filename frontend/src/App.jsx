@@ -8,8 +8,8 @@ function App() {
 
   const calculate = async (operation) => {
     try {
-        const response = await fetch(`https://calculator-production-6906.up.railway.app/${operation}`, {        method: "POST",
-        headers: {
+        const response = await fetch(`https://calculator-backend-production-4c15.up.railway.app/${operation}`, {
+            headers: {
           "Content-Type": "application/json",
           "Authorization": "Basic " + btoa("admin:password"),
         },
