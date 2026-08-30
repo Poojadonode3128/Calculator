@@ -2,12 +2,12 @@ FROM node:24 AS build
 
 WORKDIR /app
 
-COPY frontend/package.json frontend/package-lock.json ./
+COPY package.json package-lock.json ./
 
 RUN npm config set strict-ssl false
 RUN npm ci --no-audit --no-fund
 
-COPY frontend/ ./
+COPY . ./
 
 RUN npm run build
 
