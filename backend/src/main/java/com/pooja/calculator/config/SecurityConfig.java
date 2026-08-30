@@ -62,7 +62,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "https://beneficial-manifestation-production-3f4e.up.railway.app"
+                "https://calculator-frontend-production-8279.up.railway.app"
         ));
 
         configuration.setAllowedMethods(List.of(
